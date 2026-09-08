@@ -1,0 +1,41 @@
+---
+description: Backend/systems scope for iTantra — edit boundaries, contracts, ML and transport requirements
+alwaysApply: true
+---
+
+# iTantra backend / systems scope
+
+Work only on the backend/systems layer (Kotlin, Coroutines/Flow, Hilt). Other tools own UI.
+
+## Allowed paths (create/edit)
+
+- `app/src/main/java/com/isro/itantra/audio/**`
+- `app/src/main/java/com/isro/itantra/transport/**`
+- `app/src/main/java/com/isro/itantra/mode/**`
+- `app/src/main/java/com/isro/itantra/data/**`
+- `app/src/main/java/com/isro/itantra/service/**`
+- `app/src/main/java/com/isro/itantra/di/**` (do not remove or rename `UiModule.kt`)
+- `app/src/main/cpp/**` (sherpa-onnx JNI/CMake if needed)
+
+## Forbidden
+
+- Do not edit `app/src/main/java/com/isro/itantra/ui/**` or `app/src/main/res/**`
+- Do not change signatures in `app/src/main/java/com/isro/itantra/domain/contracts/` — if a change is required, stop and describe it
+- Implement `AudioEngineManager`, `TransportManager`, `ModeController` exactly as defined
+
+## Technical requirements
+
+- ML: sherpa-onnx only (STT + TTS). No other inference framework
+- STT: AI4Bharat IndicConformer INT8 under `assets/models/stt/<lang-code>/`
+- TTS: Piper/VITS under `assets/models/tts/<lang-code>/`; flag MMS-TTS (CC-BY-NC) in `docs/model-card.md` if used
+- VAD: Silero, gate STT so CPU is near-idle when silent
+- Transport: `WifiP2pManager` primary, `BluetoothSocket` fallback, ACK/retry, mid-message drop + reconnect
+- Modes: `PushToTalk`, `Duplex`, `Alert` — alert interrupts playback and forces max volume
+- Foreground service: `foregroundServiceType="microphone|connectedDevice"`
+- No main-thread blocking: inference/I/O on `Dispatchers.Default` / `Dispatchers.IO`
+
+## Tests and git
+
+- Unit tests in `app/src/test/` for state machine and protocol (encode/decode, retry)
+- Native inference and Wi-Fi Direct pairing need manual phone verification
+- Branch: `feature/backend-<module-name>`; PRs must name the contract interface(s) used

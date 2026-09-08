@@ -1,4 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">iTantra</string>
+    <string name="ui_language_hindi">हिन्दी</string>
+    <string name="ui_language_marathi">मराठी</string>
+    <string name="ui_language_gujarati">ગુજરાતી</string>
+    <string name="ui_language_kannada">ಕನ್ನಡ</string>
+    <string name="ui_language_malayalam">മലയാളം</string>
+    <string name="ui_language_tamil">தமிழ்</string>
+    <string name="ui_language_telugu">తెలుగు</string>
+    <string name="ui_language_odia">ଓଡ଼ିଆ</string>
+    <string name="ui_language_bengali">বাংলা</string>
+    <string name="ui_language_english">English</string>
 </resources>
